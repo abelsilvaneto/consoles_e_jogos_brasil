@@ -1,0 +1,199 @@
+### Teste da Rota Raiz
+GET http://localhost:3000/
+Content-Type: application/json
+
+###
+
+### 1. Cadastrar Cliente (Público)
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "nome": "Carlos",
+    "email": "carlos@gmail.com",
+    "senha": "123",
+    "cpf": "12345678901",
+    "telefone": 48999998888
+}
+
+###
+
+### 2. Cadastrar Cliente 2 (Público)
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "nome": "Ana",
+    "email": "ana@gmail.com",
+    "senha": "123",
+    "cpf": "22233344455",
+    "telefone": 48988887777
+}
+
+###
+
+###  Fazer Login com carlos 
+# @name loginReq
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "carlos@gmail.com",
+    "senha": "123"
+}
+
+### 3. Cadastrar Cliente com dados incompletos
+# Deve retornar erro se o banco exigir os campos obrigatórios
+POST http://localhost:3000/cliente
+Content-Type: application/json
+
+{
+    "nome": "Cliente Incompleto",
+    "email": "incompleto@gmail.com"
+}
+
+###
+
+### listar clientes
+GET  http://localhost:3000/clientes
+Authorization: {{loginReq.response.body.token}}
+
+###
+
+### Consultar Ciclista por ID (Privado)
+GET http://localhost:3000/cliente/1
+Authorization: {{loginReq.response.body.token}}
+
+### 4. Listar Clientes (Rota protegida)
+GET http://localhost:3000/clientes
+Authorization: {{loginReq.response.body.token}}
+
+###
+
+### 5. Cadastrar Console 1 (Rota protegida)
+POST http://localhost:3000/console
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "modelo": "PlayStation 5",
+    "marca": "Sony",
+    "numeroSerie": "PS5-0001",
+    "tipoServico": "Limpeza interna",
+    "idCliente": 1
+}
+
+###
+
+### 6. Cadastrar Console 2 (Rota protegida)
+POST http://localhost:3000/console
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "modelo": "Xbox Series X",
+    "marca": "Microsoft",
+    "numeroSerie": "XBX-0002",
+    "tipoServico": "Troca de pasta térmica",
+    "idCliente": 2
+}
+
+###
+
+### 7. Cadastrar Console com campos faltando
+# Deve retornar erro de validação do banco
+POST http://localhost:3000/console
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "modelo": "Nintendo Switch",
+    "marca": "Nintendo"
+}
+
+###
+
+### 8. Cadastrar Agendamento 1 (Cliente 1)
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "data": "2026-11-10",
+    "hora": "14:30:00",
+    "idCliente": 1,
+    "idConsole": 1
+}
+
+###
+
+### 9. Cadastrar Agendamento 2 (Cliente 2)
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "data": "2026-11-12",
+    "hora": "10:00:00",
+    "idCliente": 2,
+    "idConsole": 2
+}
+
+###
+
+### 10. Cadastrar Agendamento com console inexistente
+# Deve retornar erro se a chave estrangeira for validada pelo banco
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "data": "2026-11-15",
+    "hora": "16:00:00",
+    "idCliente": 1,
+    "idConsole": 999
+}
+
+###
+
+### 11. Cadastrar Agendamento com campos faltando
+POST http://localhost:3000/agendamento
+Authorization: {{loginReq.response.body.token}}
+Content-Type: application/json
+
+{
+    "data": "2026-11-20",
+    "hora": "09:00:00"
+}
+
+###
+
+### 12. Testar rota protegida sem token (Deve retornar erro 401)
+GET http://localhost:3000/clientes
+
+###
+
+### 13. Testar cadastro de console sem token (Deve retornar erro 401)
+POST http://localhost:3000/console
+Content-Type: application/json
+
+{
+    "modelo": "PlayStation 4",
+    "marca": "Sony",
+    "numeroSerie": "PS4-0003",
+    "tipoServico": "Diagnóstico",
+    "idCliente": 1
+}
+
+###
+
+### 14. Testar cadastro de agendamento sem token (Deve retornar erro 401)
+POST http://localhost:3000/agendamento
+Content-Type: application/json
+
+{
+    "data": "2026-11-25",
+    "hora": "11:00:00",
+    "idCliente": 1,
+    "idConsole": 1
+}
