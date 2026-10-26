@@ -12,7 +12,7 @@ btn_consultar.addEventListener('click', (e) => {
 
     const numeroSerie = document.getElementById('numeroSerie').value
 
-    fetch(`http://localhost:3000/ciclista/termo/${numeroSerie}`, {
+    fetch(`http://localhost:3000/console/termo/${numeroSerie}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

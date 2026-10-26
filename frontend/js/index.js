@@ -1,6 +1,6 @@
 const verificar_log = document.getElementById('verificar_log')
 const token = localStorage.getItem('token')
-const nome = localStorage.getItem('nomeCiclista')
+const nome = localStorage.getItem('nomeCliente')
 
 if (token) {
     verificar_log.innerHTML = `<a href="#" id="btn_logout">Logout</a> &emsp;`

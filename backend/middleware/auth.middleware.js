@@ -19,7 +19,7 @@ function authMiddleware(req,res,next){
 
        const payload = JSON.parse(dadosDescriptacao)
 
-       if(date.now() > payload.expiraEm){
+       if(Date.now() > payload.expiraEm){
         return res.status(401).json({message: 'Sessão expirada! faça login novamento'})
        }
 

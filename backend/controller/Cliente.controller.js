@@ -8,13 +8,10 @@ const cadastrar = async (req, res) => {
     const valores = req.body
 
     if (!valores.nome || !valores.email || !valores.senha || !valores.cpf || !valores.telefone) {
-        return res.status(400).json({
-            message: 'Todos os campos são obrigatórios!'
-        })
+        return res.status(400).json({message: 'Todos os campos são obrigatórios!'})
     }
 
     try {
-
 
         const senhaCriptografada = CryptoJS.AES.encrypt( valores.senha,CHAVE_SEGREDO).toString()
         const cpfCriptografado = CryptoJS.AES.encrypt( valores.cpf,CHAVE_SEGREDO).toString()
@@ -27,8 +24,7 @@ const cadastrar = async (req, res) => {
             telefone: valores.telefone
         })
 
-        return res.status(201).json({
-            message: 'Cliente cadastrado com sucesso!'})
+        return res.status(201).json({message: 'Cliente cadastrado com sucesso!'})
     } catch (err) {
         console.error('Erro ao cadastrar cliente:', err)
         return res.status(500).json({ message: 'Erro ao cadastrar cliente!' })
